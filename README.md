@@ -1,14 +1,5 @@
 # story-content-ios #
 
-### StoryContent
-
-StoryContent состоит из следующих модулей:
-
-* SCLMAuthService - аутентификация
-* SCLMSyncService - доступ к RESTful API StoryCLM
-* SCLMSyncManager - менеджер синхронизации
-* SCLMBridge - мост
-
 ### Установка
 
 #### CocoaPods
@@ -23,6 +14,15 @@ pod 'StoryContent', '~> 0.4.0'
 #### Вручную
 
 Если вы предпочитаете не использовать менеджеров зависимостей CocoaPods, вы можете добавить StoryContent.framework в свой проект вручную.
+
+### StoryContent
+
+StoryContent состоит из следующих модулей:
+
+* SCLMAuthService - аутентификация
+* SCLMSyncService - доступ к RESTful API StoryCLM
+* SCLMSyncManager - менеджер синхронизации
+* SCLMBridge - мост
 
 ### Настройка
 
