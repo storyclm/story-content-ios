@@ -9,6 +9,20 @@ StoryContent состоит из следующих модулей:
 * SCLMSyncManager - менеджер синхронизации
 * SCLMBridge - мост
 
+### Установка
+
+#### CocoaPods
+
+[CocoaPods](https://cocoapods.org) менеджер зависимостей для Cocoa проектов.
+Чтобы интегрировать StoryContent в ваш проект с помощью CocoaPods, укажите его в своем `Podfile`:
+
+```ruby
+pod 'StoryContent', '~> 0.4.0'
+```
+
+#### Вручную
+
+Если вы предпочитаете не использовать менеджеров зависимостей CocoaPods, вы можете добавить StoryContent.framework в свой проект вручную.
 
 ### Настройка
 
