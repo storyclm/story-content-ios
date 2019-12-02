@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "StoryContent"
-  s.version     = "0.4.1"
+  s.version     = "0.4.2"
   s.license     = "MIT"
   s.homepage    = "https://breffi.ru/en/storyclm"
   s.author      = "Breffi LLC"
@@ -20,4 +20,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'Alamofire', '4.8.1'
   s.dependency 'Kingfisher', '~> 5.6.0'
+  s.dependency 'ZIPFoundation', '~> 0.9'
 end
