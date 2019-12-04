@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "StoryContent"
-  s.version     = "0.4.3"
+  s.version     = "0.4.4"
   s.license     = "MIT"
   s.homepage    = "https://breffi.ru/en/storyclm"
   s.author      = "Breffi LLC"
@@ -9,6 +9,8 @@ Pod::Spec.new do |s|
                      Story— a digital-platform developed by BREFFI, allowing you to create interactive presentations with immediate feedback on the change in the customer perception of the brand and the representative’s activity.
                    DESC"
   s.source      = { :git => "https://github.com/storyclm/story-content-ios.git", :tag => s.version.to_s }
+  
+  s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2', 'OTHER_LDFLAGS' => '-all_load' }
 
   s.source_files        = "StoryContent.framework/Headers/*.h"
   s.public_header_files = "StoryContent.framework/Headers/*.h"
