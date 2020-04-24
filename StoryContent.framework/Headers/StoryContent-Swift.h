@@ -524,6 +524,14 @@ SWIFT_CLASS("_TtC12StoryContent12Presentation")
 - (nonnull instancetype)initWithEntity:(NSEntityDescription * _Nonnull)entity insertIntoManagedObjectContext:(NSManagedObjectContext * _Nullable)context OBJC_DESIGNATED_INITIALIZER;
 @end
 
+
+@interface Presentation (SWIFT_EXTENSION(StoryContent))
+- (void)addMediaFilesObject:(MediaFile * _Nonnull)value;
+- (void)removeMediaFilesObject:(MediaFile * _Nonnull)value;
+- (void)addMediaFiles:(NSSet * _Nonnull)values;
+- (void)removeMediaFiles:(NSSet * _Nonnull)values;
+@end
+
 @class Slide;
 
 @interface Presentation (SWIFT_EXTENSION(StoryContent))
@@ -531,14 +539,6 @@ SWIFT_CLASS("_TtC12StoryContent12Presentation")
 - (void)removeSlidesObject:(Slide * _Nonnull)value;
 - (void)addSlides:(NSSet * _Nonnull)values;
 - (void)removeSlides:(NSSet * _Nonnull)values;
-@end
-
-
-@interface Presentation (SWIFT_EXTENSION(StoryContent))
-- (void)addMediaFilesObject:(MediaFile * _Nonnull)value;
-- (void)removeMediaFilesObject:(MediaFile * _Nonnull)value;
-- (void)addMediaFiles:(NSSet * _Nonnull)values;
-- (void)removeMediaFiles:(NSSet * _Nonnull)values;
 @end
 
 
@@ -731,6 +731,106 @@ SWIFT_CLASS("_TtC12StoryContent19SCLMBatchLoaderView")
 - (void)stopLoading;
 @end
 
+@protocol SCLMBatchLoadingManagerDelegate;
+
+SWIFT_CLASS("_TtC12StoryContent23SCLMBatchLoadingManager")
+@interface SCLMBatchLoadingManager : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// Установка делегата загрузки
+/// note:
+/// По окончании вызывает метод делегата <code>batchManagerPrepareForDownloading</code>
+/// <ul>
+///   <li>
+///     Info: Присваивает переменной <code>loadingDelegate</code> себя в качестве <code>batchLoadingManager</code>
+///   </li>
+/// </ul>
+/// \param loadingDelegate Делегат SCLMBatchLoadingManagerDelegate
+///
+- (void)addBatchLoadable:(id <SCLMBatchLoadingManagerDelegate> _Nonnull)loadingDelegate;
+/// Добавляет презентации в очередь загрузки
+/// note:
+/// Удаляет все старые презентации из очереди
+/// note:
+/// По окончании вызывает метод делегата <code>batchManagerPrepareForDownloading</code>
+/// \param presentations Презентации для загрузки
+///
+- (void)addPresentations:(NSArray<Presentation *> * _Nonnull)presentations;
+/// Начать загрузку презентаций из очереди
+- (void)startLoading;
+/// Отмена загрузки презентаций.
+/// Прерывает загрузку текущей презентации и очищает очередь загрузки.
+/// note:
+/// По окончании вызывает метод делегата <code>batchManagerDone</code>
+- (void)cancelLoading;
+@end
+
+
+SWIFT_PROTOCOL("_TtP12StoryContent31SCLMBatchLoadingManagerDelegate_")
+@protocol SCLMBatchLoadingManagerDelegate
+@property (nonatomic, strong) SCLMBatchLoadingManager * _Nullable batchLoadingManager;
+/// Возвращает кол-во презентаций, который будут загружены менеджером
+/// note:
+/// Метод вызывается при вызове методов: <code>addBatchLoadable</code> и <code>addPresentations</code>
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param presentationCount Количество презентаций для скачивания в менеджере
+///
+- (void)batchManagerPrepareForDownloading:(SCLMBatchLoadingManager * _Nonnull)manager presentationCount:(NSInteger)presentationCount;
+/// Начало загрузки презентации
+/// note:
+/// Вызывается в main queue
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param presentation Презентация, которая начала загружаться
+///
+- (void)batchManagerStartLoading:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+/// Изменение прогресса загрузки презентации
+/// note:
+/// Вызывается в main queue
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param progress Экземпляр Progress с прогрессом синхронизации для презентации
+///
+/// \param presentation Загружаемая презентация
+///
+- (void)batchManagerProgressChanged:(SCLMBatchLoadingManager * _Nonnull)manager progress:(NSProgress * _Nonnull)progress for:(Presentation * _Nonnull)presentation;
+/// Успешная загрузка презентации
+/// note:
+/// Вызывается в main queue
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param presentation Загруженная презентация
+///
+- (void)batchManagerDidLoadPresentation:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+/// Запрос на повторную загрузку презентациий при ошибке
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param error Экземпляр Error с описанием ошибки
+///
+/// \param presentation Презентация при загрузке которой возникла ошибка
+///
+///
+/// returns:
+/// true - Поместить презентацию в конец очереди загрузки, false - пропустить загрузку презентации
+- (BOOL)batchManagerShouldRepeatLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
+/// Ошибка при загрузке презентации (вызывается если метод <code>batchManagerShouldRepeatLoadingPresentation</code> вернул false)
+/// note:
+/// Вызывается в main queue
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param error Экземпляр Error с описанием ошибки
+///
+/// \param presentation Презентация при загрузке которой возникла ошибка
+///
+- (void)batchManagerFailedLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation;
+/// Вызывается по окончании загрузки всех презентаций
+/// \param manager Экземпляр SCLMBatchLoadingManager
+///
+/// \param isCanceled true - загрузка презентаций закончилась по вызову метода <code>cancelLoading</code>, false - все презентации были загружены (возможно с ошибками)
+///
+- (void)batchManagerDone:(SCLMBatchLoadingManager * _Nonnull)manager isCanceled:(BOOL)isCanceled;
+@end
+
 @class UIButton;
 @class SCLMBatchLoadingViewModel;
 
@@ -793,6 +893,16 @@ SWIFT_CLASS("_TtC12StoryContent30SCLMBatchLoadingViewController")
 @end
 
 
+@interface SCLMBatchLoadingViewController (SWIFT_EXTENSION(StoryContent)) <SCLMBatchLoadingManagerDelegate>
+@property (nonatomic, strong) SCLMBatchLoadingManager * _Nullable batchLoadingManager;
+- (void)batchManagerPrepareForDownloading:(SCLMBatchLoadingManager * _Nonnull)manager presentationCount:(NSInteger)presentationCount;
+- (void)batchManagerStartLoading:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerProgressChanged:(SCLMBatchLoadingManager * _Nonnull)manager progress:(NSProgress * _Nonnull)progress for:(Presentation * _Nonnull)presentation;
+- (void)batchManagerDidLoadPresentation:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+- (BOOL)batchManagerShouldRepeatLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
+- (void)batchManagerFailedLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerDone:(SCLMBatchLoadingManager * _Nonnull)manager isCanceled:(BOOL)isCanceled;
+@end
 
 @class UIColor;
 @class LabelViewModel;
@@ -809,6 +919,30 @@ SWIFT_CLASS("_TtC12StoryContent25SCLMBatchLoadingViewModel")
 @property (nonatomic, strong) LabelViewModel * _Nonnull progressViewModel;
 @property (nonatomic, strong) LabelViewModel * _Nonnull currentLoadingViewModel;
 @property (nonatomic, strong) ButtonViewModel * _Nonnull cancelButtonViewModel;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+@class UIFont;
+
+SWIFT_CLASS("_TtCC12StoryContent25SCLMBatchLoadingViewModel14LabelViewModel")
+@interface LabelViewModel : NSObject
+@property (nonatomic, copy) NSString * _Nullable text;
+@property (nonatomic, strong) UIColor * _Nullable textColor;
+@property (nonatomic) NSTextAlignment alignment;
+@property (nonatomic) CGFloat kern;
+@property (nonatomic) CGFloat lineHeight;
+@property (nonatomic, strong) UIFont * _Nullable font;
+@property (nonatomic) NSInteger numberOfLines;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtCC12StoryContent25SCLMBatchLoadingViewModel15ButtonViewModel")
+@interface ButtonViewModel : NSObject
+@property (nonatomic, copy) NSString * _Nullable text;
+@property (nonatomic, strong) UIColor * _Nullable normalColor;
+@property (nonatomic, strong) UIColor * _Nullable highlightedColor;
+@property (nonatomic) BOOL isHidden;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
