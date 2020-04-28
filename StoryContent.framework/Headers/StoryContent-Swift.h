@@ -708,6 +708,12 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) SCLMAuthServ
 @end
 
 
+SWIFT_PROTOCOL("_TtP12StoryContent19SCLMBatchCancelable_")
+@protocol SCLMBatchCancelable
+- (void)cancelLoading;
+@end
+
+
 SWIFT_PROTOCOL("_TtP12StoryContent17SCLMBatchLoadable_")
 @protocol SCLMBatchLoadable
 @property (nonatomic, readonly) CGSize preferredSize;
@@ -765,45 +771,57 @@ SWIFT_CLASS("_TtC12StoryContent23SCLMBatchLoadingManager")
 @end
 
 
+@interface SCLMBatchLoadingManager (SWIFT_EXTENSION(StoryContent)) <SCLMBatchCancelable>
+@end
+
+
 SWIFT_PROTOCOL("_TtP12StoryContent31SCLMBatchLoadingManagerDelegate_")
 @protocol SCLMBatchLoadingManagerDelegate
-@property (nonatomic, strong) SCLMBatchLoadingManager * _Nullable batchLoadingManager;
+@property (nonatomic, strong) id <SCLMBatchCancelable> _Nullable batchCancelable;
 /// Возвращает кол-во презентаций, который будут загружены менеджером
 /// note:
 /// Метод вызывается при вызове методов: <code>addBatchLoadable</code> и <code>addPresentations</code>
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param presentationCount Количество презентаций для скачивания в менеджере
 ///
-- (void)batchManagerPrepareForDownloading:(SCLMBatchLoadingManager * _Nonnull)manager presentationCount:(NSInteger)presentationCount;
+- (void)batchManagerPrepareForDownloading:(id <SCLMBatchCancelable> _Nonnull)manager presentationCount:(NSInteger)presentationCount;
 /// Начало загрузки презентации
 /// note:
 /// Вызывается в main queue
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param presentation Презентация, которая начала загружаться
 ///
-- (void)batchManagerStartLoading:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerStartLoading:(id <SCLMBatchCancelable> _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
 /// Изменение прогресса загрузки презентации
 /// note:
 /// Вызывается в main queue
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param progress Экземпляр Progress с прогрессом синхронизации для презентации
 ///
 /// \param presentation Загружаемая презентация
 ///
-- (void)batchManagerProgressChanged:(SCLMBatchLoadingManager * _Nonnull)manager progress:(NSProgress * _Nonnull)progress for:(Presentation * _Nonnull)presentation;
+- (void)batchManagerProgressChanged:(id <SCLMBatchCancelable> _Nonnull)manager progress:(NSProgress * _Nonnull)progress for:(Presentation * _Nonnull)presentation;
+/// Общий прогресс загрузки презентации
+/// note:
+/// Вызывается в main queue
+/// \param manager Экземпляр SCLMBatchCancelable
+///
+/// \param progress Экземпляр Progress с прогрессом синхронизации для презентаций
+///
+- (void)batchManagerTotalProgressChanged:(id <SCLMBatchCancelable> _Nonnull)manager progress:(NSProgress * _Nonnull)progress;
 /// Успешная загрузка презентации
 /// note:
 /// Вызывается в main queue
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param presentation Загруженная презентация
 ///
-- (void)batchManagerDidLoadPresentation:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerDidLoadPresentation:(id <SCLMBatchCancelable> _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
 /// Запрос на повторную загрузку презентациий при ошибке
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param error Экземпляр Error с описанием ошибки
 ///
@@ -812,23 +830,23 @@ SWIFT_PROTOCOL("_TtP12StoryContent31SCLMBatchLoadingManagerDelegate_")
 ///
 /// returns:
 /// true - Поместить презентацию в конец очереди загрузки, false - пропустить загрузку презентации
-- (BOOL)batchManagerShouldRepeatLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)batchManagerShouldRepeatLoadingPresentation:(id <SCLMBatchCancelable> _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
 /// Ошибка при загрузке презентации (вызывается если метод <code>batchManagerShouldRepeatLoadingPresentation</code> вернул false)
 /// note:
 /// Вызывается в main queue
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param error Экземпляр Error с описанием ошибки
 ///
 /// \param presentation Презентация при загрузке которой возникла ошибка
 ///
-- (void)batchManagerFailedLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerFailedLoadingPresentation:(id <SCLMBatchCancelable> _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation;
 /// Вызывается по окончании загрузки всех презентаций
-/// \param manager Экземпляр SCLMBatchLoadingManager
+/// \param manager Экземпляр SCLMBatchCancelable
 ///
 /// \param isCanceled true - загрузка презентаций закончилась по вызову метода <code>cancelLoading</code>, false - все презентации были загружены (возможно с ошибками)
 ///
-- (void)batchManagerDone:(SCLMBatchLoadingManager * _Nonnull)manager isCanceled:(BOOL)isCanceled;
+- (void)batchManagerDone:(id <SCLMBatchCancelable> _Nonnull)manager isSuccess:(BOOL)isSuccess;
 @end
 
 @class UIButton;
@@ -894,14 +912,15 @@ SWIFT_CLASS("_TtC12StoryContent30SCLMBatchLoadingViewController")
 
 
 @interface SCLMBatchLoadingViewController (SWIFT_EXTENSION(StoryContent)) <SCLMBatchLoadingManagerDelegate>
-@property (nonatomic, strong) SCLMBatchLoadingManager * _Nullable batchLoadingManager;
-- (void)batchManagerPrepareForDownloading:(SCLMBatchLoadingManager * _Nonnull)manager presentationCount:(NSInteger)presentationCount;
-- (void)batchManagerStartLoading:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
-- (void)batchManagerProgressChanged:(SCLMBatchLoadingManager * _Nonnull)manager progress:(NSProgress * _Nonnull)progress for:(Presentation * _Nonnull)presentation;
-- (void)batchManagerDidLoadPresentation:(SCLMBatchLoadingManager * _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
-- (BOOL)batchManagerShouldRepeatLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
-- (void)batchManagerFailedLoadingPresentation:(SCLMBatchLoadingManager * _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation;
-- (void)batchManagerDone:(SCLMBatchLoadingManager * _Nonnull)manager isCanceled:(BOOL)isCanceled;
+@property (nonatomic, strong) id <SCLMBatchCancelable> _Nullable batchCancelable;
+- (void)batchManagerPrepareForDownloading:(id <SCLMBatchCancelable> _Nonnull)manager presentationCount:(NSInteger)presentationCount;
+- (void)batchManagerStartLoading:(id <SCLMBatchCancelable> _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerProgressChanged:(id <SCLMBatchCancelable> _Nonnull)manager progress:(NSProgress * _Nonnull)progress for:(Presentation * _Nonnull)presentation;
+- (void)batchManagerTotalProgressChanged:(id <SCLMBatchCancelable> _Nonnull)manager progress:(NSProgress * _Nonnull)progress;
+- (void)batchManagerDidLoadPresentation:(id <SCLMBatchCancelable> _Nonnull)manager presentation:(Presentation * _Nonnull)presentation;
+- (BOOL)batchManagerShouldRepeatLoadingPresentation:(id <SCLMBatchCancelable> _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
+- (void)batchManagerFailedLoadingPresentation:(id <SCLMBatchCancelable> _Nonnull)manager error:(NSError * _Nonnull)error presentation:(Presentation * _Nonnull)presentation;
+- (void)batchManagerDone:(id <SCLMBatchCancelable> _Nonnull)manager isSuccess:(BOOL)isSuccess;
 @end
 
 @class UIColor;
@@ -1175,12 +1194,12 @@ SWIFT_CLASS("_TtC12StoryContent24SCLMDeepLinkOutboundData")
 
 
 @interface SCLMDeepLinkOutboundData (SWIFT_EXTENSION(StoryContent))
-+ (NSString * _Nullable)tryToCreateScheme:(NSString * _Nullable)scheme SWIFT_WARN_UNUSED_RESULT;
+- (NSDictionary<NSString *, id> * _Nonnull)asDictionary SWIFT_WARN_UNUSED_RESULT;
 @end
 
 
 @interface SCLMDeepLinkOutboundData (SWIFT_EXTENSION(StoryContent))
-- (NSDictionary<NSString *, id> * _Nonnull)asDictionary SWIFT_WARN_UNUSED_RESULT;
++ (NSString * _Nullable)tryToCreateScheme:(NSString * _Nullable)scheme SWIFT_WARN_UNUSED_RESULT;
 @end
 
 
@@ -1261,6 +1280,34 @@ SWIFT_CLASS("_TtC12StoryContent13SCLMObjcToken")
 @property (nonatomic, readonly, strong) NSNumber * _Nullable expires_in;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_DEPRECATED_MSG("-init is unavailable");
+@end
+
+
+SWIFT_CLASS("_TtC12StoryContent31SCLMParallelBatchLoadingManager")
+@interface SCLMParallelBatchLoadingManager : NSObject
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+/// note:
+/// По окончании вызывает метод делегата <code>batchManagerPrepareForDownloading</code>
+/// <ul>
+///   <li>
+///     Info: Присваивает переменной <code>loadingDelegate</code> себя в качестве <code>batchLoadingManager</code>
+///   </li>
+/// </ul>
+/// \param loadingDelegate Делегат SCLMBatchLoadingManagerDelegate
+///
+- (void)addBatchLoadableWithDelegate:(id <SCLMBatchLoadingManagerDelegate> _Nonnull)delegate;
+- (void)addPresentations:(NSArray<Presentation *> * _Nonnull)presentations;
+/// Начать загрузку презентаций из очереди
+- (void)startLoading;
+/// Отмена загрузки презентаций.
+/// Прерывает загрузку всех презентаций и очищает список загрузок.
+/// note:
+/// По окончании вызывает метод делегата <code>parallelBatchManagerDone</code>
+- (void)cancelLoading;
+@end
+
+
+@interface SCLMParallelBatchLoadingManager (SWIFT_EXTENSION(StoryContent)) <SCLMBatchCancelable>
 @end
 
 
