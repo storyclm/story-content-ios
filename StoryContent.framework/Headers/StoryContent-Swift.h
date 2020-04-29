@@ -763,15 +763,15 @@ SWIFT_CLASS("_TtC12StoryContent23SCLMBatchLoadingManager")
 - (void)addPresentations:(NSArray<Presentation *> * _Nonnull)presentations;
 /// Начать загрузку презентаций из очереди
 - (void)startLoading;
+@end
+
+
+@interface SCLMBatchLoadingManager (SWIFT_EXTENSION(StoryContent)) <SCLMBatchCancelable>
 /// Отмена загрузки презентаций.
 /// Прерывает загрузку текущей презентации и очищает очередь загрузки.
 /// note:
 /// По окончании вызывает метод делегата <code>batchManagerDone</code>
 - (void)cancelLoading;
-@end
-
-
-@interface SCLMBatchLoadingManager (SWIFT_EXTENSION(StoryContent)) <SCLMBatchCancelable>
 @end
 
 
@@ -1296,18 +1296,25 @@ SWIFT_CLASS("_TtC12StoryContent31SCLMParallelBatchLoadingManager")
 /// \param loadingDelegate Делегат SCLMBatchLoadingManagerDelegate
 ///
 - (void)addBatchLoadableWithDelegate:(id <SCLMBatchLoadingManagerDelegate> _Nonnull)delegate;
-- (void)addPresentations:(NSArray<Presentation *> * _Nonnull)presentations;
-/// Начать загрузку презентаций из очереди
-- (void)startLoading;
-/// Отмена загрузки презентаций.
-/// Прерывает загрузку всех презентаций и очищает список загрузок.
+/// Добавляет презентации в очередь загрузки
 /// note:
-/// По окончании вызывает метод делегата <code>parallelBatchManagerDone</code>
-- (void)cancelLoading;
+/// Удаляет все старые презентации из очереди
+/// note:
+/// По окончании вызывает метод делегата <code>batchManagerPrepareForDownloading</code>
+/// \param presentations Презентации для загрузки
+///
+- (void)addPresentations:(NSArray<Presentation *> * _Nonnull)presentations;
+/// Начать загрузку презентаций из очереди <code>presentations</code>
+- (void)startLoading;
 @end
 
 
 @interface SCLMParallelBatchLoadingManager (SWIFT_EXTENSION(StoryContent)) <SCLMBatchCancelable>
+/// Отмена загрузки презентаций.
+/// Прерывает загрузку всех презентаций и очищает список загрузок.
+/// note:
+/// По окончании вызывает метод делегата <code>batchManagerDone</code>
+- (void)cancelLoading;
 @end
 
 
