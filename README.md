@@ -1,3 +1,7 @@
+[![Pod Platform](https://img.shields.io/cocoapods/p/StoryContent)](https://cocoapods.org/pods/StoryContent)
+[![Pod License](https://img.shields.io/cocoapods/l/StoryContent)](https://github.com/storyclm/story-content-ios/blob/master/LICENSE)
+[![Cocoapods](https://img.shields.io/cocoapods/v/StoryContent)](https://cocoapods.org/pods/StoryContent)
+
 # story-content-ios #
 
 ### Установка
