@@ -617,6 +617,8 @@ SWIFT_CLASS("_TtC12StoryContent28PresentationSynchronizingNow")
 @property (nonatomic, readonly, strong) Presentation * _Nonnull presentation;
 @property (nonatomic, weak) NSProgress * _Nullable contentPackageUnzipProgress;
 @property (nonatomic, strong) NSProgress * _Nonnull progress;
+@property (nonatomic, copy) void (^ _Nullable objcProgressHandler)(NSNumber * _Nullable, NSProgress * _Nonnull);
+@property (nonatomic, copy) void (^ _Nullable objcCompletionHandler)(NSNumber * _Nullable);
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_DEPRECATED_MSG("-init is unavailable");
 @end
