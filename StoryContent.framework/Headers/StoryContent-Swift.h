@@ -552,6 +552,7 @@ SWIFT_CLASS("_TtC12StoryContent12Presentation")
 - (void)setUnopenedState;
 /// Returns sturtUpSlide for current Presentation
 - (Slide * _Nullable)startUpSlide SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)isPresentationNew SWIFT_WARN_UNUSED_RESULT;
 /// Returns opened state for current Presentation
 - (BOOL)isOpened SWIFT_WARN_UNUSED_RESULT;
 /// Returns syncReady state for current Presentation
@@ -584,12 +585,15 @@ SWIFT_CLASS("_TtC12StoryContent12Presentation")
 @property (nonatomic, strong) NSDate * _Nullable created;
 @property (nonatomic, strong) NSNumber * _Nullable debugModeEnabled;
 @property (nonatomic, copy) NSString * _Nullable imgId;
+@property (nonatomic, strong) NSNumber * _Nullable isNew;
 @property (nonatomic, copy) NSString * _Nullable longDescription;
 @property (nonatomic, copy) NSString * _Nullable map;
 @property (nonatomic, strong) NSNumber * _Nullable mapEnabled;
 @property (nonatomic, strong) NSNumber * _Nullable mapType;
 @property (nonatomic, copy) NSString * _Nullable name;
 @property (nonatomic, strong) NSNumber * _Nullable needConfirmation;
+@property (nonatomic, strong) NSNumber * _Nullable opened;
+@property (nonatomic, strong) NSDate * _Nullable openedDate;
 @property (nonatomic, strong) NSNumber * _Nullable order;
 @property (nonatomic, strong) NSNumber * _Nullable presentationId;
 @property (nonatomic, strong) NSNumber * _Nullable previewMode;
@@ -601,8 +605,6 @@ SWIFT_CLASS("_TtC12StoryContent12Presentation")
 @property (nonatomic, copy) NSString * _Nullable thumbImgId;
 @property (nonatomic, strong) NSDate * _Nullable updatedDate;
 @property (nonatomic, strong) NSNumber * _Nullable visibility;
-@property (nonatomic, strong) NSNumber * _Nullable opened;
-@property (nonatomic, strong) NSDate * _Nullable openedDate;
 @property (nonatomic, strong) Client * _Nullable client;
 @property (nonatomic, strong) ContentPackage * _Nullable contentPackage;
 @property (nonatomic, copy) NSSet<MediaFile *> * _Nullable mediaFiles;
