@@ -1111,6 +1111,7 @@ SWIFT_PROTOCOL("_TtP12StoryContent32SCLMBridgeSessionsModuleProtocol_")
 SWIFT_CLASS("_TtC12StoryContent17SCLMBridgeStorage")
 @interface SCLMBridgeStorage : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+- (NSArray<BridgeSession *> * _Nullable)findNotSynchronizedSessionsWithUser:(User * _Nullable)user SWIFT_WARN_UNUSED_RESULT;
 - (NSArray<BridgeSession *> * _Nullable)findFinishedNotSynchronizedSessionsWithUser:(User * _Nullable)user SWIFT_WARN_UNUSED_RESULT;
 - (NSArray<BridgeSession *> * _Nullable)findFinishedNotSynchronizedSessions SWIFT_WARN_UNUSED_RESULT;
 - (NSArray<SessionAction *> * _Nullable)findNotSynchronizedSessionActionsWithUser:(User * _Nullable)user SWIFT_WARN_UNUSED_RESULT;
