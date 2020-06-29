@@ -1120,6 +1120,7 @@ SWIFT_CLASS("_TtC12StoryContent17SCLMBridgeStorage")
 - (NSArray<SessionEventAction *> * _Nullable)findNotSynchronizedSessionEventActions SWIFT_WARN_UNUSED_RESULT;
 - (void)setSessionAddressWithSessionId:(NSString * _Nonnull)sessionId address:(NSString * _Nullable)address;
 - (void)setSessionSynchronizedWithSessionId:(NSString * _Nonnull)sessionId;
+- (void)setSessionSynchronizedWithStatus:(BOOL)status sessionId:(NSString * _Nonnull)sessionId;
 - (void)setSessionActionSynchronizedWithSessionActionId:(NSString * _Nonnull)id;
 - (void)setSessionEventActionSynchronizedWithSessionEventActionId:(NSString * _Nonnull)id;
 - (void)saveContext;
