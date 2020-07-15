@@ -1078,6 +1078,7 @@ SWIFT_CLASS("_TtC12StoryContent18SCLMBridgeSessions")
 @interface SCLMBridgeSessions : NSObject
 @property (nonatomic, readonly, strong) SCLMBridgeSession * _Nonnull session;
 @property (nonatomic) BOOL isOutboundDataWithSessionInfo;
+- (SCLMBridgeSession * _Nullable)unfinishedSession SWIFT_WARN_UNUSED_RESULT;
 - (void)addNewSession;
 - (void)createNewSessionForPresentation:(Presentation * _Nonnull)presentation;
 - (void)restoreUnfinishedSession;
@@ -1121,8 +1122,11 @@ SWIFT_CLASS("_TtC12StoryContent17SCLMBridgeStorage")
 - (void)setSessionAddressWithSessionId:(NSString * _Nonnull)sessionId address:(NSString * _Nullable)address;
 - (void)setSessionSynchronizedWithSessionId:(NSString * _Nonnull)sessionId;
 - (void)setSessionSynchronizedWithStatus:(BOOL)status sessionId:(NSString * _Nonnull)sessionId;
+- (void)setSessionsSynchronizedWithIds:(NSArray<NSString *> * _Nonnull)ids status:(BOOL)status;
 - (void)setSessionActionSynchronizedWithSessionActionId:(NSString * _Nonnull)id;
+- (void)setSessionActionsSynchronizedWithIds:(NSArray<NSString *> * _Nonnull)ids;
 - (void)setSessionEventActionSynchronizedWithSessionEventActionId:(NSString * _Nonnull)id;
+- (void)setSessionEventActionsSynchronizedWithIds:(NSArray<NSString *> * _Nonnull)ids;
 - (void)saveContext;
 @end
 
