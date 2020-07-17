@@ -708,6 +708,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) SCLMAuthServ
 /// Logout
 /// Set token to nil and invoke logoutHandler
 - (void)logout;
+- (void)refreshCredentialsWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (void)objcRefreshCredentialsWithSuccess:(void (^ _Nonnull)(void))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 @end
 
@@ -971,12 +972,14 @@ SWIFT_CLASS("_TtCC12StoryContent25SCLMBatchLoadingViewModel15ButtonViewModel")
 
 @protocol SCLMBridgeProtocol;
 @class SCLMBridgeSessions;
+@class WKWebView;
 @class SCLMBridgeModule;
 
 SWIFT_CLASS("_TtC12StoryContent10SCLMBridge")
 @interface SCLMBridge : NSObject
 @property (nonatomic, weak) id <SCLMBridgeProtocol> _Nullable delegate;
 @property (nonatomic, readonly, strong) SCLMBridgeSessions * _Nonnull sessions;
+- (nonnull instancetype)initWithPresenter:(WKWebView * _Nonnull)presenter presentation:(Presentation * _Nonnull)presentation delegate:(id <SCLMBridgeProtocol> _Nullable)delegate OBJC_DESIGNATED_INITIALIZER;
 - (void)handleJavaScriptRequest;
 - (void)subscribeWithModule:(SCLMBridgeModule * _Nonnull)module_ toCommands:(NSArray<NSString *> * _Nonnull)commands;
 - (void)addBridgeModule:(SCLMBridgeModule * _Nonnull)module_;
@@ -1084,11 +1087,16 @@ SWIFT_CLASS("_TtC12StoryContent18SCLMBridgeSessions")
 - (void)restoreUnfinishedSession;
 - (void)deleteCurrentSession;
 - (void)updateStateForCurrentSessionWithState:(enum SessionState)state;
-- (void)updateStateForSessionWithSessionId:(NSString * _Nonnull)sessionId state:(enum SessionState)state;
+- (void)updateStateForSessionWithSessionId:(NSString * _Nonnull)sessionId state:(enum SessionState)state SWIFT_DEPRECATED_MSG("", "updateStateForSessionWithSession:state:");
+- (void)updateStateForSessionWithSession:(SCLMBridgeSession * _Nonnull)session state:(enum SessionState)state;
 - (void)closeSessionWithAction:(enum LogAction)action state:(enum SessionState)state;
 - (void)incrementSlidesCountForCurrentSession;
 - (void)updateSlidesForCurrentSessionWithSlide:(Slide * _Nonnull)slide duration:(CFTimeInterval)duration;
 - (void)setSessionComplete;
+- (void)logAction:(enum LogAction)action presentation:(Presentation * _Nonnull)presentation;
+- (void)logAction:(enum LogAction)action slide:(Slide * _Nonnull)slide duration:(CFTimeInterval)duration navigationMethod:(NSString * _Nonnull)navigationMethod;
+- (void)logAction:(enum LogAction)action mediaFile:(MediaFile * _Nonnull)mediaFile duration:(int64_t)duration;
+- (void)logEventKey:(NSString * _Nonnull)key value:(id _Nonnull)value presentation:(Presentation * _Nonnull)presentation;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_DEPRECATED_MSG("-init is unavailable");
 @end
@@ -1221,6 +1229,7 @@ SWIFT_CLASS("_TtC12StoryContent22SCLMDeepLinkingManager")
 @interface SCLMDeepLinkingManager : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) SCLMDeepLinkingManager * _Nonnull shared;)
 + (SCLMDeepLinkingManager * _Nonnull)shared SWIFT_WARN_UNUSED_RESULT;
+@property (nonatomic, strong) SCLMDeepLink * _Nullable deepLink;
 @property (nonatomic, readonly, copy) NSString * _Nonnull scheme;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_DEPRECATED_MSG("-init is unavailable");
@@ -1288,6 +1297,7 @@ SWIFT_CLASS("_TtC12StoryContent13SCLMObjcToken")
 @property (nonatomic, readonly, copy) NSString * _Nullable refresh_token;
 @property (nonatomic, readonly, copy) NSString * _Nullable token_type;
 @property (nonatomic, readonly, strong) NSNumber * _Nullable expires_in;
+- (nonnull instancetype)initWithAccess:(NSString * _Nullable)access refresh:(NSString * _Nullable)refresh tokenType:(NSString * _Nullable)tokenType expires_in:(NSNumber * _Nullable)expires_in OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_DEPRECATED_MSG("-init is unavailable");
 @end
@@ -1386,6 +1396,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) SCLMSyncMana
 /// \param presentation Presentation to update
 ///
 - (void)updatePresentation:(Presentation * _Nonnull)presentation completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)cancelSynchronizePresentationWith:(NSNumber * _Nonnull)id;
 /// Cancel Synchronize Presentation
 /// Cancel synchronize presentation if required
 /// note:
@@ -1483,6 +1494,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) SCLMSyncMana
 /// note:
 ///
 - (PresentationSynchronizingNow * _Nullable)isPresentationSynchronizingNowWithPresentation:(Presentation * _Nonnull)presentation SWIFT_WARN_UNUSED_RESULT;
+- (PresentationSynchronizingNow * _Nullable)isPresentationSynchronizingNowWithId:(NSNumber * _Nonnull)id SWIFT_WARN_UNUSED_RESULT;
 /// Returns true if now is synchronizing presentation with map enabled and thumbnails operation processing
 /// Beacause thumbnails are creating by WebView on main thread, use it to avoid prevent several presentation synchronizing with thumbs at the same time
 - (BOOL)isPresentationSynchronizingNowWithThumbsCreation SWIFT_WARN_UNUSED_RESULT;
@@ -1519,6 +1531,11 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) SCLMSyncServ
 /// \param timeoutInterval 120 is by default
 ///
 - (void)setTimeoutInterval:(NSTimeInterval)timeoutInterval;
+/// Проверяет существования пользователя в системе. Вернет профиль если пользователь зарегистрирован и добавлен в клиент.
+/// GET /v1/users/exists?username={username}
+/// Host: api.storyclm.com
+/// Content-Type: application/json
+- (void)checkUserExistsWithUserName:(NSString * _Nonnull)userName success:(void (^ _Nonnull)(SCLMUser * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 - (void)objcCheckUserExistsWithUserName:(NSString * _Nonnull)userName success:(void (^ _Nonnull)(SCLMUser * _Nonnull))success failure:(void (^ _Nonnull)(NSError * _Nonnull))failure;
 @end
 
