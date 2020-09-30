@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "StoryContent"
-  s.version     = "0.5.0"
+  s.version     = "0.5.6"
   s.license     = "MIT"
   s.homepage    = "https://breffi.ru/en/storyclm"
   s.author      = "Breffi LLC"
