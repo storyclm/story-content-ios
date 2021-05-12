@@ -23,4 +23,9 @@ Pod::Spec.new do |s|
   s.dependency 'Alamofire', '~> 4.8'
   s.dependency 'Kingfisher', '~> 5.6'
   s.dependency 'ZIPFoundation', '~> 0.9'
+  
+  s.pod_target_xcconfig = {
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'
+  }
+  s.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 end
