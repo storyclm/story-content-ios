@@ -1,0 +1,1606 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.4 (swiftlang-1205.0.26.9 clang-1205.0.19.55)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name StoryContent
+import AVFoundation
+import Alamofire
+import CommonCrypto
+import CoreData
+import CoreLocation
+import Foundation
+import Kingfisher
+import PDFKit
+@_exported import StoryContent
+import Swift
+import UIKit
+import WebKit
+import ZIPFoundation
+extension FileManager {
+  public static var documentDirUrl: Foundation.URL {
+    get
+  }
+  public static var contentDirUrl: Foundation.URL {
+    get
+  }
+  public static var cacheDirUrl: Foundation.URL {
+    get
+  }
+  public static var sourcesDirUrl: Foundation.URL {
+    get
+  }
+  public static var thumbsDirUrl: Foundation.URL {
+    get
+  }
+  public static var mediaFilesDirUrl: Foundation.URL {
+    get
+  }
+  public static var logsFilesDirUrl: Foundation.URL {
+    get
+  }
+  public func deviceRemainingFreeSpaceInBytes() -> Swift.Int64?
+  public class func removeFile(filePath: Swift.String) -> Swift.Bool
+  public class func removeFolderIfExists(at url: Foundation.URL) -> Swift.Bool
+  public class func removeAllStoryContentFolders() -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers public class Slide : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Client {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.Client>
+  @objc @NSManaged dynamic public var clientId: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var created: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var email: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var imgId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longDescription: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var name: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var shortdescription: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var synchronized: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var thumbImgId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var updatedDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var url: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentations: Swift.Set<StoryContent.Presentation>? {
+    @objc get
+    @objc set
+  }
+}
+extension Client {
+  @objc(addPresentationsObject:) @NSManaged dynamic public func addToPresentations(_ value: StoryContent.Presentation)
+  @objc(removePresentationsObject:) @NSManaged dynamic public func removeFromPresentations(_ value: StoryContent.Presentation)
+  @objc(addPresentations:) @NSManaged dynamic public func addToPresentations(_ values: Foundation.NSSet)
+  @objc(removePresentations:) @NSManaged dynamic public func removeFromPresentations(_ values: Foundation.NSSet)
+}
+@_hasMissingDesignatedInitializers public class SCLMAuthService {
+  public struct PasswordReloginResult {
+    public init(login: Swift.String, password: Swift.String)
+  }
+  public static let shared: StoryContent.SCLMAuthService
+  public var logoutHandler: (() -> Swift.Void)?
+  public var reloginHandler: (() -> StoryContent.SCLMAuthService.PasswordReloginResult?)?
+  public func setClientId(_ clientId: Swift.String)
+  public func setClientSecret(_ clientSecret: Swift.String)
+  public func setAppId(_ appId: Swift.String)
+  public func setAppSecret(_ appSecret: Swift.String)
+  public func setAuthEndpoint(_ authEndpoint: Swift.String)
+  public func setTimeoutInterval(_ timeoutInterval: Foundation.TimeInterval)
+  public func authAsService(success: @escaping () -> Swift.Void, failure: @escaping (StoryContent.SCLMError) -> Swift.Void)
+  public func auth(username: Swift.String, password: Swift.String, success: @escaping () -> Swift.Void, failure: @escaping (StoryContent.SCLMError) -> Swift.Void)
+  public func logout()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class ContentPackage : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class SCLMDeepLinkingManager {
+  public static let shared: StoryContent.SCLMDeepLinkingManager
+  public var deepLink: StoryContent.SCLMDeepLink?
+  public var scheme: Swift.String {
+    get
+  }
+  public func handleURL(_ url: Foundation.URL, source: Swift.String? = nil)
+  @objc deinit
+}
+public struct SCLMDeepLinkInboundData {
+}
+extension SCLMDeepLinkInboundData {
+  public func asDictionary() -> [Swift.String : Any]
+}
+extension SessionEventAction {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.SessionEventAction>
+  @objc @NSManaged dynamic public var created: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var id: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var key: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentationId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sessionId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var synchronized: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var timeZone: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var value: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var isRestored: Swift.Bool {
+    @objc get
+    @objc set
+  }
+}
+public protocol SCLMBridgeUIModuleProtocol : AnyObject {
+  func hideCloseBtn()
+  func hideSystemBtns()
+}
+@objc public protocol SCLMLocationManagerDelegate {
+  @objc optional func locationServicesDisabled(manager: StoryContent.SCLMLocationManager)
+  @objc optional func authorizationStatusNoAccess(manager: StoryContent.SCLMLocationManager)
+  @objc optional func authorizationStatusAccessGranted(manager: StoryContent.SCLMLocationManager)
+}
+@objc @_inheritsConvenienceInitializers public class SCLMLocationManager : ObjectiveC.NSObject {
+  public static let shared: StoryContent.SCLMLocationManager
+  public var location: CoreLocation.CLLocation?
+  @objc deinit
+  public func startUpdatingLocation()
+  public func stopUpdatingLocation()
+  @discardableResult
+  public func checkLocationServices() -> CoreLocation.CLAuthorizationStatus?
+  public func locationServicesEnabled() -> Swift.Bool
+  public func geocode(coordinate: CoreLocation.CLLocationCoordinate2D, completion: @escaping ((Swift.Result<CoreLocation.CLPlacemark, Swift.Error>)?) -> Swift.Void)
+  public func address(for coordinate: CoreLocation.CLLocationCoordinate2D, completion: @escaping (Swift.String?) -> Swift.Void)
+  public func address(isForced: Swift.Bool, completion: @escaping (Swift.String?) -> Swift.Void)
+  public func addDelegate(_ delegate: StoryContent.SCLMLocationManagerDelegate)
+  public func removeDelegate(_ delegate: StoryContent.SCLMLocationManagerDelegate)
+  @objc override dynamic public init()
+}
+extension SCLMLocationManager : CoreLocation.CLLocationManagerDelegate {
+  @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didUpdateLocations locations: [CoreLocation.CLLocation])
+  @objc dynamic public func locationManager(_ manager: CoreLocation.CLLocationManager, didChangeAuthorization status: CoreLocation.CLAuthorizationStatus)
+}
+extension BridgeMessage {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.BridgeMessage>
+  @objc @NSManaged dynamic public var command: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var contentId: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var createdDate: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var data: Foundation.Data? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var guid: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var order: Swift.Int16 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var queue: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var response: Swift.String? {
+    @objc get
+    @objc set
+  }
+}
+@objc @_hasMissingDesignatedInitializers public class PresentationSynchronizingNow : ObjectiveC.NSObject {
+  final public let presentationId: Swift.Int
+  weak public var contentPackageDownloadRequest: Alamofire.DownloadRequest?
+  weak public var contentPackageUnzipProgress: Foundation.Progress?
+  public var progress: Foundation.Progress {
+    get
+    set
+  }
+  public var progressHandler: ((Swift.Int?, Foundation.Progress) -> Swift.Void)?
+  public var completionHandler: ((Swift.Int?) -> Swift.Void)?
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension BridgeCustomEvent {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.BridgeCustomEvent>
+  @objc @NSManaged dynamic public var contentId: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var createdDate: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var eventId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var eventKey: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var eventValue: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sessionId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sync: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var timeZone: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+}
+public enum SCLMBridgeConstants : Swift.String {
+  case Handler
+  case GetQueue
+  case Queue
+  case Scheme
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public class SCLMBridge {
+  weak public var delegate: StoryContent.SCLMBridgeProtocol?
+  final public let sessions: StoryContent.SCLMBridgeSessions
+  public init(presenter: WebKit.WKWebView, presentation: StoryContent.Presentation, delegate: StoryContent.SCLMBridgeProtocol?)
+  @objc deinit
+  public func handleJavaScriptRequest()
+  public func subscribe(module: StoryContent.SCLMBridgeModule, toCommands commands: [Swift.String])
+  public func addBridgeModule(_ module: StoryContent.SCLMBridgeModule)
+}
+@_hasMissingDesignatedInitializers public class SCLMBridgeSession {
+  public var sessionId: Swift.String {
+    get
+  }
+  public var deepLinkInboundData: StoryContent.SCLMDeepLinkInboundData? {
+    get
+  }
+  public var deepLinkOutboundData: StoryContent.SCLMDeepLinkOutboundData? {
+    get
+  }
+  public func initDeepLinking(_ deepLink: StoryContent.SCLMDeepLink?)
+  @objc deinit
+}
+public struct SessionSlide {
+}
+public enum LogAction : Swift.String {
+  case open
+  case close
+  case complete
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class Client : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Presentation {
+  @objc convenience dynamic public init(context: CoreData.NSManagedObjectContext)
+  public class func entityName() -> Swift.String
+  public class func presentationIdProperty() -> Swift.String
+  public func setOpendState()
+  public func setUnopenedState()
+  public func startUpSlide() -> StoryContent.Slide?
+  public func isOpened() -> Swift.Bool
+  public func isSyncReady() -> Swift.Bool
+  public func isSyncNow() -> Swift.Bool
+  public func isSyncWait() -> Swift.Bool
+  public func isSyncDone() -> Swift.Bool
+  public func isUpdateAvailable() -> Swift.Bool
+  public func sourcesFolderUrl() -> Foundation.URL?
+  public func contentSize() -> Swift.Int64
+  public func mediaSize() -> Swift.Int64
+  public func totalSize() -> Swift.Int64
+  public func isContentExists() -> Swift.Bool
+  public func checkMediaFiles(completion: @escaping () -> Swift.Void)
+}
+@_hasMissingDesignatedInitializers public class URIManager {
+  @_hasMissingDesignatedInitializers public class SplitQueryItems {
+    @objc deinit
+  }
+  public static func buildComponents(raw: Swift.String, singleParameters: [Swift.String]?, queue: [Swift.String : Swift.String]?) -> Foundation.URLComponents?
+  public static func splitQueryItems(_ items: [Foundation.URLQueryItem]?) -> StoryContent.URIManager.SplitQueryItems?
+  @objc deinit
+}
+extension MediaFile {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.MediaFile>
+  @objc @NSManaged dynamic public var blobId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var created: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var fileName: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var fileSize: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var isAvailableForSharing: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var mediaFileId: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var mimeType: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var revision: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var title: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var updatedDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentation: StoryContent.Presentation? {
+    @objc get
+    @objc set
+  }
+}
+@_hasMissingDesignatedInitializers public class SCLMDeepLinkDataStorage {
+  public static let instance: StoryContent.SCLMDeepLinkDataStorage
+  @objc deinit
+  public func inboundData(id: Swift.String) -> StoryContent.InboundData?
+  public func inboundData(sessionId: Swift.String) -> StoryContent.InboundData?
+  public func notSynchronizedInboundData(user: StoryContent.User?) -> [StoryContent.InboundData]?
+  public func notSynchronizedInboundData() -> [StoryContent.InboundData]?
+  public func setInboundDataSynchronized(with dataId: Swift.String?)
+  public func outboundData(id: Swift.String) -> StoryContent.OutboundData?
+  public func outboundData(sessionId: Swift.String) -> StoryContent.OutboundData?
+  public func notSynchronizedOutboundData(user: StoryContent.User?) -> [StoryContent.OutboundData]?
+  public func notSynchronizedOutboundData() -> [StoryContent.OutboundData]?
+  public func setOutboundDataSynchronized(with dataId: Swift.String?)
+}
+@_inheritsConvenienceInitializers @objc(BridgeMessage) public class BridgeMessage : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension SessionAction {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.SessionAction>
+  @objc @NSManaged dynamic public var created: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var duration: Swift.Int64 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var id: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var navigation: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentationId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sessionId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var slideId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var slideName: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var synchronized: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var timeZone: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var isRestored: Swift.Bool {
+    @objc get
+    @objc set
+  }
+}
+extension InboundData {
+  public func asDict() -> [Swift.String : Any]
+  public func parametersList() -> [Swift.String : Swift.String]
+}
+public enum Algorithm {
+  case md5, sha1, sha224, sha256, sha384, sha512
+  public var digestLength: Swift.Int {
+    get
+  }
+  public static func == (a: StoryContent.Algorithm, b: StoryContent.Algorithm) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol Hashable {
+  associatedtype Hash
+  func digest(_ algorithm: StoryContent.Algorithm, key: Swift.String?) -> Self.Hash
+  var md5: Self.Hash { get }
+  var sha1: Self.Hash { get }
+  var sha224: Self.Hash { get }
+  var sha256: Self.Hash { get }
+  var sha384: Self.Hash { get }
+  var sha512: Self.Hash { get }
+}
+extension Hashable {
+  public var md5: Self.Hash {
+    get
+  }
+  public var sha1: Self.Hash {
+    get
+  }
+  public var sha224: Self.Hash {
+    get
+  }
+  public var sha256: Self.Hash {
+    get
+  }
+  public var sha384: Self.Hash {
+    get
+  }
+  public var sha512: Self.Hash {
+    get
+  }
+}
+extension String : StoryContent.Hashable {
+  public func digest(_ algorithm: StoryContent.Algorithm) -> Swift.String
+  public func digest(_ algorithm: StoryContent.Algorithm, key: Swift.String?) -> Swift.String
+  public func digest(_ algorithm: StoryContent.Algorithm, key: Foundation.Data?) -> Swift.String
+  public typealias Hash = Swift.String
+}
+extension Data : StoryContent.Hashable {
+  public func digest(_ algorithm: StoryContent.Algorithm) -> Foundation.Data
+  public func digest(_ algorithm: StoryContent.Algorithm, key: Swift.String?) -> Foundation.Data
+  public func digest(_ algorithm: StoryContent.Algorithm, key: Foundation.Data?) -> Foundation.Data
+  public typealias Hash = Foundation.Data
+}
+public enum SCLMErrorType : Swift.Int {
+  case cancelled
+  case offline
+  case authorization
+  public func description() -> Swift.String
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class SCLMError : Foundation.NSError {
+  public class func make(description: Swift.String, reason: Swift.String?) -> StoryContent.SCLMError
+  public class func make(code: Swift.Int, description: Swift.String, reason: Swift.String?) -> StoryContent.SCLMError
+  public class func make(type: StoryContent.SCLMErrorType) -> StoryContent.SCLMError
+  public func isCancelledType() -> Swift.Bool
+  public func isOfflineType() -> Swift.Bool
+  public func isAuthorizationType() -> Swift.Bool
+  @objc override dynamic public init(domain: Swift.String, code: Swift.Int, userInfo dict: [Swift.String : Any]? = nil)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers public class SCLMBatchLoadingViewController : UIKit.UIViewController {
+  public var maximumFailCount: Swift.Int
+  public var onDismiss: ((Swift.Bool, [Swift.Int]) -> Swift.Void)?
+  @objc override dynamic public func viewDidLoad()
+  @objc override dynamic public func traitCollectionDidChange(_ previousTraitCollection: UIKit.UITraitCollection?)
+  public var viewModel: StoryContent.SCLMBatchLoadingViewModel {
+    get
+    set
+  }
+  public func present(on viewController: UIKit.UIViewController, completion: @escaping (() -> Swift.Void))
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+extension SCLMBatchLoadingViewController : StoryContent.SCLMBatchLoadingManagerDelegate {
+  public var batchLoadingManager: StoryContent.SCLMBatchLoadingManager? {
+    get
+    set
+  }
+  public func batchManagerPrepareForDownloading(_ manager: StoryContent.SCLMBatchLoadingManager, presentationCount: Swift.Int)
+  public func batchManagerStartLoading(_ manager: StoryContent.SCLMBatchLoadingManager, presentation: StoryContent.Presentation)
+  public func batchManagerProgressChanged(_ manager: StoryContent.SCLMBatchLoadingManager, progress: Foundation.Progress, for presentation: StoryContent.Presentation)
+  public func batchManagerDidLoadPresentation(_ manager: StoryContent.SCLMBatchLoadingManager, presentation: StoryContent.Presentation)
+  public func batchManagerShouldRepeatLoadingPresentation(_ manager: StoryContent.SCLMBatchLoadingManager, error: Swift.Error, presentation: StoryContent.Presentation) -> Swift.Bool
+  public func batchManagerFailedLoadingPresentation(_ manager: StoryContent.SCLMBatchLoadingManager, error: Swift.Error, presentation: StoryContent.Presentation)
+  public func batchManagerDone(_ manager: StoryContent.SCLMBatchLoadingManager, isCanceled: Swift.Bool)
+}
+@objc @_inheritsConvenienceInitializers public class SCLMBridgeResponse : ObjectiveC.NSObject {
+  public struct Status {
+    public static let success: StoryContent.SCLMBridgeResponse.Status
+    public static let failure: StoryContent.SCLMBridgeResponse.Status
+  }
+  convenience public init(guid: Swift.String, responseData: Any?, status: StoryContent.SCLMBridgeResponse.Status, errorMessage: Swift.String?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+public protocol SCLMBridgeCustomEventsModuleProtocol : AnyObject {
+  func setEventKey(_ key: Swift.String, and value: Any)
+}
+@_inheritsConvenienceInitializers @objc(InboundDataParameter) public class InboundDataParameter : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(SessionAction) public class SessionAction : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Presentation {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.Presentation>
+  @objc @NSManaged dynamic public var created: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var debugModeEnabled: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var imgId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longDescription: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var map: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var mapEnabled: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var mapType: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var name: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var needConfirmation: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var order: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentationId: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var previewMode: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var rawData: Foundation.NSData? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var revision: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var shortdescription: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var skip: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var syncState: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var thumbImgId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var updatedDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var visibility: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var opened: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var openedDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var client: StoryContent.Client? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var contentPackage: StoryContent.ContentPackage? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var mediaFiles: Swift.Set<StoryContent.MediaFile>? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var slides: Swift.Set<StoryContent.Slide>? {
+    @objc get
+    @objc set
+  }
+}
+extension Presentation {
+  @objc(addMediaFilesObject:) @NSManaged dynamic public func addToMediaFiles(_ value: StoryContent.MediaFile)
+  @objc(removeMediaFilesObject:) @NSManaged dynamic public func removeFromMediaFiles(_ value: StoryContent.MediaFile)
+  @objc(addMediaFiles:) @NSManaged dynamic public func addToMediaFiles(_ values: Foundation.NSSet)
+  @objc(removeMediaFiles:) @NSManaged dynamic public func removeFromMediaFiles(_ values: Foundation.NSSet)
+}
+extension Presentation {
+  @objc(addSlidesObject:) @NSManaged dynamic public func addToSlides(_ value: StoryContent.Slide)
+  @objc(removeSlidesObject:) @NSManaged dynamic public func removeFromSlides(_ value: StoryContent.Slide)
+  @objc(addSlides:) @NSManaged dynamic public func addToSlides(_ values: Foundation.NSSet)
+  @objc(removeSlides:) @NSManaged dynamic public func removeFromSlides(_ values: Foundation.NSSet)
+}
+@objc @_hasMissingDesignatedInitializers public class MediaFileDownloadingNow : ObjectiveC.NSObject {
+  public var mediaFileId: Foundation.NSNumber {
+    get
+  }
+  public var presentationId: Foundation.NSNumber {
+    get
+  }
+  weak public var downloadRequest: Alamofire.DownloadRequest?
+  public var progress: Foundation.Progress {
+    get
+    set
+  }
+  public var progressHandler: ((Foundation.Progress) -> Swift.Void)?
+  public var completionHandler: (() -> Swift.Void)?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class SCLMDeepLinkOutboundData {
+  final public let sessionId: Swift.String?
+  public var scheme: Swift.String? {
+    get
+  }
+  public var params: [Swift.String : Swift.String] {
+    get
+  }
+  public func resultString() -> Swift.String?
+  public func resultURL() -> Foundation.URL?
+  @objc deinit
+}
+extension SCLMDeepLinkOutboundData {
+  public func asDictionary() -> [Swift.String : Any]
+}
+extension SCLMDeepLinkOutboundData {
+  public static func tryToCreateScheme(_ scheme: Swift.String?) -> Swift.String?
+}
+@_inheritsConvenienceInitializers @objc(BridgeSession) public class BridgeSession : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+public enum SLWebViewNavigationType {
+  case linkCliked, formSubmitted, backForward, reload, formresubmitted, other
+  public static func == (a: StoryContent.SLWebViewNavigationType, b: StoryContent.SLWebViewNavigationType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol SCLMWebViewProtocol : AnyObject {
+  func webViewDidStartLoad(webView: StoryContent.SCLMWebView)
+  func webViewDidFinishLoad(webView: StoryContent.SCLMWebView)
+  func webView(_ webView: StoryContent.SCLMWebView, didFailLoadWith error: Foundation.NSError)
+  func webView(_ webView: StoryContent.SCLMWebView, shouldStartLoadWith request: Foundation.NSURLRequest, navigationType: StoryContent.SLWebViewNavigationType) -> Swift.Bool
+}
+@objc @_inheritsConvenienceInitializers public class SCLMWebView : WebKit.WKWebView, WebKit.WKNavigationDelegate {
+  @objc public func webView(_ webView: WebKit.WKWebView, didStartProvisionalNavigation navigation: WebKit.WKNavigation!)
+  @objc public func webView(_ webView: WebKit.WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WebKit.WKNavigation!)
+  @objc public func webView(_ webView: WebKit.WKWebView, didFailProvisionalNavigation navigation: WebKit.WKNavigation!, withError error: Swift.Error)
+  @objc public func webView(_ webView: WebKit.WKWebView, didCommit navigation: WebKit.WKNavigation!)
+  @objc public func webView(_ webView: WebKit.WKWebView, didFinish navigation: WebKit.WKNavigation!)
+  @objc public func webView(_ webView: WebKit.WKWebView, didFail navigation: WebKit.WKNavigation!, withError error: Swift.Error)
+  @objc override dynamic public init(frame: CoreGraphics.CGRect, configuration: WebKit.WKWebViewConfiguration)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class SCLMBridgeMessage {
+  public var guid: Swift.String {
+    get
+  }
+  public var command: Swift.String {
+    get
+  }
+  public var data: Any {
+    get
+  }
+  public var response: Swift.String {
+    get
+  }
+  public var processingCounter: Swift.Int {
+    get
+  }
+  @objc deinit
+}
+public enum SCLMBridgeMessageCommand : Swift.String {
+  case setCustomEvent
+  case getCustomEventByKey
+  case deleteCustomEventByKey
+  case getCustomEventsObject
+  case getMediaFiles
+  case openMediaFile
+  case openMediaLibrary
+  case hideMediaLibraryBtn
+  case showMediaLibraryBtn
+  case onMediaFilesControllerOpen
+  case onMediaFilesControllerClosed
+  case getSessions
+  case getCurrentSessions
+  case setSessionComplete
+  case go
+  case getNavigationData
+  case getAppInfo
+  case getUserInfo
+  case getGeoLocationInfo
+  case open
+  case closePresentation
+  case getPresentationInfo
+  case getPreviousSlide
+  case getNextSlide
+  case getBackForwardList
+  case getPresentations
+  case getBackForwardPresList
+  case getCurrentSlideName
+  case hideCloseBtn
+  case hideSystemBtns
+  case httpget
+  case httppost
+  case httpput
+  case httpdelete
+  case getMap
+  case hideMapBtn
+  case showMapBtn
+  case getDeepLinkingInboundData
+  case getDeepLinkingOutboundData
+  case setDeepLinkingOutboundScheme
+  case setDeepLinkingOutboundParameter
+  case getDeepLinkingOutboundParameter
+  case deleteDeepLinkingOutboundParameter
+  public func stringValue() -> Swift.String
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_inheritsConvenienceInitializers @objc(BridgeCustomEvent) public class BridgeCustomEvent : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Slide {
+  @objc convenience dynamic public init(context: CoreData.NSManagedObjectContext)
+  public class func entityName() -> Swift.String
+  public class func slideIdPopertyName() -> Swift.String
+  public func checkThumbImageExists() -> Swift.Bool
+  public func checkHtmlExists() -> Swift.Bool
+  public func isFileNotEmptyAtUrl(_ url: Foundation.URL) -> Swift.Bool
+  public func getThumbImageUrl() -> Foundation.URL?
+  public func getPreviewImageUrl() -> Foundation.URL?
+  public func createdString() -> Swift.String
+}
+public protocol SCLMBridgeMapModuleProtocol : AnyObject {
+  func hideMapBtn()
+  func showMapBtn()
+}
+@_inheritsConvenienceInitializers @objc(OutboundDataParameter) public class OutboundDataParameter : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(SessionEventAction) public class SessionEventAction : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class SCLMSyncManager {
+  public static let shared: StoryContent.SCLMSyncManager
+  public var context: CoreData.NSManagedObjectContext {
+    get
+  }
+  public var fetchedResultsController: CoreData.NSFetchedResultsController<CoreData.NSFetchRequestResult> {
+    get
+    set
+  }
+  public var fetchedResultsControllerSectionLess: CoreData.NSFetchedResultsController<CoreData.NSFetchRequestResult> {
+    get
+    set
+  }
+  public var fetchedResultsControllerInvisible: CoreData.NSFetchedResultsController<CoreData.NSFetchRequestResult> {
+    get
+    set
+  }
+  public func synchronizeClients(completionHandler: @escaping (StoryContent.SCLMError?) -> Swift.Void)
+  public func synchronizePresentation(_ presentation: StoryContent.Presentation, completionHandler: @escaping (Swift.Error?) -> Swift.Void, progressHandler: @escaping (Foundation.Progress) -> Swift.Void, psnHandler: ((StoryContent.PresentationSynchronizingNow) -> Swift.Void)?)
+  public func deletePresentationContentPackage(_ presentation: StoryContent.Presentation)
+  public func updatePresentation(_ presentation: StoryContent.Presentation, completionHandler: @escaping (Swift.Error?) -> Swift.Void)
+  public func cancelSynchronizePresentation(with id: Foundation.NSNumber)
+  public func cancelSynchronizePresentation(_ presentation: StoryContent.Presentation)
+  public func resetContent(completionHandler: @escaping (Swift.Bool) -> Swift.Void)
+  public func resetContent(isIgnoreInternetReachable: Swift.Bool = false, completionHandler: @escaping (Swift.Bool) -> Swift.Void)
+  public func getUser() -> StoryContent.User?
+  public func getClients() -> [StoryContent.Client]?
+  public func getClient(withId id: Swift.Int) -> StoryContent.Client?
+  public func getPresentation(withId id: Swift.Int) -> StoryContent.Presentation?
+  public func getPresentation(withName name: Swift.String) -> StoryContent.Presentation?
+  public func getSlide(withId id: Swift.Int32) -> StoryContent.Slide?
+  public func getSlide(withName name: Swift.String) -> StoryContent.Slide?
+  public func saveContext()
+  public func isPresentationSynchronizingNow(presentation: StoryContent.Presentation) -> StoryContent.PresentationSynchronizingNow?
+  public func isPresentationSynchronizingNow(id: Foundation.NSNumber) -> StoryContent.PresentationSynchronizingNow?
+  public func isPresentationSynchronizingNowWithThumbsCreation() -> Swift.Bool
+  public func resetAllOpenedState()
+  public func isMediaFileDownloadingNow(mediaFileId: Foundation.NSNumber?, presentationId: Foundation.NSNumber?) -> StoryContent.MediaFileDownloadingNow?
+  @objc deinit
+}
+public enum ClosePresentationMode {
+  case closeDefault, closeSessionComplete, closeSessionTest
+  public static func == (a: StoryContent.ClosePresentationMode, b: StoryContent.ClosePresentationMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol SCLMBridgePresentationModuleProtocol : AnyObject {
+  typealias SlideName = Swift.String
+  func openPresentation(_ presentation: StoryContent.Presentation, with slideName: Swift.String?, and data: Any?)
+  func getPreviousSlide() -> StoryContent.Slide?
+  func getNextSlide() -> StoryContent.Slide?
+  func getCurrentSlideName() -> Swift.String?
+  func getBackForwardList() -> [Self.SlideName]?
+  func getBackForwardPresList() -> [StoryContent.Presentation]?
+  func closePresentation(mode: StoryContent.ClosePresentationMode)
+}
+@objc @_inheritsConvenienceInitializers public class Presentation : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+@objc open class SCLMBridgeModule : ObjectiveC.NSObject {
+  public init(presenter: WebKit.WKWebView, session: StoryContent.SCLMBridgeSession, presentation: StoryContent.Presentation, settings: Any?, environments: Any?, delegate: StoryContent.SCLMBridgeProtocol?)
+  @objc deinit
+  open func execute(message: StoryContent.SCLMBridgeMessage, result: @escaping (StoryContent.SCLMBridgeResponse?) -> Swift.Void)
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers public class SCLMSyncService {
+  public static let shared: StoryContent.SCLMSyncService
+  public func setApiEndpoint(_ endPoint: Swift.String)
+  public func setTimeoutInterval(_ timeoutInterval: Foundation.TimeInterval)
+  @objc deinit
+}
+extension OutboundData {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.OutboundData>
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var modelId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var scheme: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sessionId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var synchronized: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var timeZone: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var created: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var isRestored: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var parameters: Foundation.NSSet? {
+    @objc get
+    @objc set
+  }
+}
+extension OutboundData {
+  @objc(addParametersObject:) @NSManaged dynamic public func addToParameters(_ value: StoryContent.OutboundDataParameter)
+  @objc(removeParametersObject:) @NSManaged dynamic public func removeFromParameters(_ value: StoryContent.OutboundDataParameter)
+  @objc(addParameters:) @NSManaged dynamic public func addToParameters(_ values: Foundation.NSSet)
+  @objc(removeParameters:) @NSManaged dynamic public func removeFromParameters(_ values: Foundation.NSSet)
+}
+public enum SessionState : Swift.Int {
+  case isInProcess
+  case isComplete
+  case isTest
+  case isLeaveViaJs
+  case isLeaveViaDeepLink
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class SCLMBridgeSessions {
+  public var session: StoryContent.SCLMBridgeSession {
+    get
+  }
+  public var isOutboundDataWithSessionInfo: Swift.Bool
+  @available(*, deprecated, renamed: "unfinishedSession")
+  public func isUnfinishedSessionExist() -> (isExist: Swift.Bool, session: StoryContent.SCLMBridgeSession?)
+  public func unfinishedSession() -> StoryContent.SCLMBridgeSession?
+  public func restoreUnfinishedSession()
+  public func addNewSession()
+  public func createNewSession(forPresentation presentation: StoryContent.Presentation)
+  public func updateStateForCurrentSession(state: StoryContent.SessionState)
+  @available(*, deprecated, renamed: "updateStateForSession(session:state:)")
+  public func updateStateForSession(withSessionId sessionId: Swift.String, state: StoryContent.SessionState)
+  public func updateStateForSession(session: StoryContent.SCLMBridgeSession, state: StoryContent.SessionState)
+  public func closeSession(action: StoryContent.LogAction, state: StoryContent.SessionState)
+  public func setSessionComplete()
+  public func deleteCurrentSession()
+  public func incrementSlidesCountForCurrentSession()
+  public func updateSlidesForCurrentSession(withSlide slide: StoryContent.Slide, duration: CoreFoundation.CFTimeInterval)
+  public func lastOpenedSlideId() -> Swift.Int32?
+  public func logAction(_ action: StoryContent.LogAction, presentation: StoryContent.Presentation)
+  public func logAction(_ action: StoryContent.LogAction, slide: StoryContent.Slide, duration: CoreFoundation.CFTimeInterval, navigationMethod: Swift.String)
+  public func logAction(_ action: StoryContent.LogAction, mediaFile: StoryContent.MediaFile, duration: Swift.Int64)
+  public func logEventKey(_ key: Swift.String, value: Any, presentation: StoryContent.Presentation)
+  public func updateLastOpenedSlideId(_ slideId: Swift.Int32?)
+  @objc deinit
+}
+extension SCLMBridgeSessions {
+  public func updateOutboundDataWithSessionInfo()
+  public func markDeeplinkDataAsSyncable()
+}
+@_inheritsConvenienceInitializers @objc(OutboundData) public class OutboundData : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+public protocol SCLMBridgeMediaFilesModuleProtocol : AnyObject {
+  func openMediaFile(_ fileName: Swift.String)
+  func openMediaLibrary()
+  func showMediaLibraryBtn()
+  func hideMediaLibraryBtn()
+}
+extension InboundDataParameter {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.InboundDataParameter>
+  @objc @NSManaged dynamic public var name: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var value: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var parentData: StoryContent.InboundData? {
+    @objc get
+    @objc set
+  }
+}
+extension SessionEventAction {
+  public func asDict() -> [Swift.String : Any]
+}
+@_hasMissingDesignatedInitializers public class SCLMCoreDataManager {
+  public static let shared: StoryContent.SCLMCoreDataManager
+  public func user() -> StoryContent.User?
+  @objc deinit
+}
+extension ContentPackage {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.ContentPackage>
+  @objc @NSManaged dynamic public var blobId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var contentPackageId: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var created: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var fileSize: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var mimeType: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var revision: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var updatedDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentation: StoryContent.Presentation? {
+    @objc get
+    @objc set
+  }
+}
+extension Slide {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.Slide>
+  @objc @NSManaged dynamic public var created: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var linkedSlides: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var name: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var pageSource: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var revision: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var slideId: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var swipeNext: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var swipePrevious: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var updatedDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentation: StoryContent.Presentation? {
+    @objc get
+    @objc set
+  }
+}
+extension SessionAction {
+  public func asDict() -> [Swift.String : Any]
+}
+extension OutboundData {
+  public func asDict() -> [Swift.String : Any]
+  public func parametersList() -> [Swift.String : Swift.String]
+}
+@_hasMissingDesignatedInitializers public class SCLMBridgeStorage {
+  public init()
+  @objc deinit
+  public func findFinishedNotSynchronizedSessions(user: StoryContent.User?) -> [StoryContent.BridgeSession]?
+  public func findFinishedNotSynchronizedSessions() -> [StoryContent.BridgeSession]?
+  public func findNotSynchronizedSessions() -> [StoryContent.BridgeSession]?
+  public func findNotSynchronizedSessionActions(user: StoryContent.User?) -> [StoryContent.SessionAction]?
+  public func findNotSynchronizedSessionActions() -> [StoryContent.SessionAction]?
+  public func findNotSynchronizedSessionEventActions(user: StoryContent.User?) -> [StoryContent.SessionEventAction]?
+  public func findNotSynchronizedSessionEventActions() -> [StoryContent.SessionEventAction]?
+  public func setSessionAddress(withSessionId sessionId: Swift.String, address: Swift.String?)
+  public func setSessionSynchronized(withSessionId sessionId: Swift.String)
+  public func setSessionSynchronized(status: Swift.Bool, sessionId: Swift.String)
+  public func setSessionsSynchronized(ids: [Swift.String], status: Swift.Bool)
+  public func setSessionActionSynchronized(withSessionActionId id: Swift.String)
+  public func setSessionActionsSynchronized(ids: [Swift.String])
+  public func setSessionEventActionSynchronized(withSessionEventActionId id: Swift.String)
+  public func setSessionEventActionsSynchronized(ids: [Swift.String])
+}
+public protocol SCLMBridgeBaseModuleProtocol : AnyObject {
+  func goToSlide(_ slide: StoryContent.Slide, with data: Any)
+  func getNavigationData() -> Any
+}
+public class TreeNode<T> {
+  public var value: T
+  weak public var parent: StoryContent.TreeNode<T>?
+  public var children: [StoryContent.TreeNode<T>]
+  public init(value: T)
+  public func addChild(_ node: StoryContent.TreeNode<T>)
+  @objc deinit
+}
+extension TreeNode : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension TreeNode where T : Swift.Equatable {
+  public func search(_ value: T) -> StoryContent.TreeNode<T>?
+}
+extension OutboundDataParameter {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.OutboundDataParameter>
+  @objc @NSManaged dynamic public var name: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var value: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var parentData: StoryContent.OutboundData? {
+    @objc get
+    @objc set
+  }
+}
+extension InboundData {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.InboundData>
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var modelId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sessionId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var source: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var synchronized: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var uri: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var timeZone: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var created: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var isRestored: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var parameters: Foundation.NSSet? {
+    @objc get
+    @objc set
+  }
+}
+extension InboundData {
+  @objc(addParametersObject:) @NSManaged dynamic public func addToParameters(_ value: StoryContent.InboundDataParameter)
+  @objc(removeParametersObject:) @NSManaged dynamic public func removeFromParameters(_ value: StoryContent.InboundDataParameter)
+  @objc(addParameters:) @NSManaged dynamic public func addToParameters(_ values: Foundation.NSSet)
+  @objc(removeParameters:) @NSManaged dynamic public func removeFromParameters(_ values: Foundation.NSSet)
+}
+@objc @_inheritsConvenienceInitializers public class SCLMBatchLoaderView : UIKit.UIView {
+  @objc override dynamic public init(frame: CoreGraphics.CGRect)
+  @objc required dynamic public init?(coder: Foundation.NSCoder)
+  @objc override dynamic public func layoutSubviews()
+  @objc deinit
+}
+extension SCLMBatchLoaderView : StoryContent.SCLMBatchLoadable {
+  public var preferredSize: CoreGraphics.CGSize {
+    get
+  }
+  public func startLoading()
+  public func stopLoading()
+}
+@_inheritsConvenienceInitializers @objc(InboundData) public class InboundData : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+public protocol SCLMBridgeSessionsModuleProtocol : AnyObject {
+  func setSessionComplete()
+}
+public protocol SCLMBatchLoadable {
+  var preferredSize: CoreGraphics.CGSize { get }
+  func startLoading()
+  func stopLoading()
+}
+public class SCLMBatchLoadingViewModel {
+  public class LabelViewModel {
+    public var text: Swift.String?
+    public var textColor: UIKit.UIColor?
+    public var alignment: UIKit.NSTextAlignment
+    public var kern: CoreGraphics.CGFloat
+    public var lineHeight: CoreGraphics.CGFloat
+    public var font: UIKit.UIFont?
+    public var numberOfLines: Swift.Int
+    public init()
+    @objc deinit
+  }
+  public class ButtonViewModel {
+    public var text: Swift.String?
+    public var normalColor: UIKit.UIColor?
+    public var highlightedColor: UIKit.UIColor?
+    public var isHidden: Swift.Bool
+    public init()
+    @objc deinit
+  }
+  public var loader: (UIKit.UIView & StoryContent.SCLMBatchLoadable)?
+  public var backgroundColor: UIKit.UIColor?
+  public var loaderColor: UIKit.UIColor
+  public var isShowLoadingLabel: Swift.Bool
+  public var titleViewModel: StoryContent.SCLMBatchLoadingViewModel.LabelViewModel
+  public var subtitleViewModel: StoryContent.SCLMBatchLoadingViewModel.LabelViewModel
+  public var progressViewModel: StoryContent.SCLMBatchLoadingViewModel.LabelViewModel
+  public var currentLoadingViewModel: StoryContent.SCLMBatchLoadingViewModel.LabelViewModel
+  public var cancelButtonViewModel: StoryContent.SCLMBatchLoadingViewModel.ButtonViewModel
+  public init()
+  @objc deinit
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers public class SCLMBatchLoadingView : UIKit.UIView {
+  public var loader: (UIKit.UIView & StoryContent.SCLMBatchLoadable)?
+  final public let closeButton: UIKit.UIButton
+  public var viewModel: StoryContent.SCLMBatchLoadingViewModel {
+    get
+    set
+  }
+  @objc override dynamic public func layoutSubviews()
+  public func increaseProgressText()
+  public func setProgress(current: Swift.Int, total: Swift.Int?)
+  public func updateProgressText()
+  public func setProgressText(_ text: Swift.String?)
+  public func setLoadingText(_ text: Swift.String?)
+  public func updateAppearance()
+  public func updateLabelAppearance()
+  @objc deinit
+}
+public struct SCLMDeepLink : Swift.Equatable {
+  public var url: Swift.String?
+  public var source: Swift.String?
+  public var contentId: Swift.Int?
+  public var contentName: Swift.String?
+  public var slide: Swift.String?
+  public var sessionId: Swift.String?
+  public var userId: Swift.String?
+  public var signature: Swift.String?
+  public var callback: Swift.String?
+  public var params: [Swift.String : Swift.String]?
+  public init(url: Swift.String, source: Swift.String?, params: [Swift.String : Swift.String])
+  public static func == (a: StoryContent.SCLMDeepLink, b: StoryContent.SCLMDeepLink) -> Swift.Bool
+}
+public protocol SCLMBatchLoadingManagerDelegate : AnyObject {
+  var batchLoadingManager: StoryContent.SCLMBatchLoadingManager? { get set }
+  func batchManagerPrepareForDownloading(_ manager: StoryContent.SCLMBatchLoadingManager, presentationCount: Swift.Int)
+  func batchManagerStartLoading(_ manager: StoryContent.SCLMBatchLoadingManager, presentation: StoryContent.Presentation)
+  func batchManagerProgressChanged(_ manager: StoryContent.SCLMBatchLoadingManager, progress: Foundation.Progress, for presentation: StoryContent.Presentation)
+  func batchManagerDidLoadPresentation(_ manager: StoryContent.SCLMBatchLoadingManager, presentation: StoryContent.Presentation)
+  func batchManagerShouldRepeatLoadingPresentation(_ manager: StoryContent.SCLMBatchLoadingManager, error: Swift.Error, presentation: StoryContent.Presentation) -> Swift.Bool
+  func batchManagerFailedLoadingPresentation(_ manager: StoryContent.SCLMBatchLoadingManager, error: Swift.Error, presentation: StoryContent.Presentation)
+  func batchManagerDone(_ manager: StoryContent.SCLMBatchLoadingManager, isCanceled: Swift.Bool)
+}
+public class SCLMBatchLoadingManager {
+  public init()
+  public func addBatchLoadable(_ loadingDelegate: StoryContent.SCLMBatchLoadingManagerDelegate)
+  public func addPresentations(_ presentations: [StoryContent.Presentation])
+  public func startLoading()
+  public func cancelLoading()
+  @objc deinit
+}
+extension BridgeSession {
+  public func asDict() -> [Swift.String : Any]
+}
+public enum SCLMDateFormatter {
+  public static func serverTimeString(from date: Foundation.Date?) -> Swift.String?
+}
+public protocol SCLMBridgeProtocol : AnyObject {
+}
+@objc @_inheritsConvenienceInitializers public class User : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+extension Client {
+  public func getThumbImage() -> UIKit.UIImage?
+}
+extension ContentPackage {
+  public class func entityName() -> Swift.String
+  public class func contentPackageIdPopertyName() -> Swift.String
+  public func isDownloadCanBeResumed() -> Swift.Bool
+}
+extension User {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.User>
+  @objc @NSManaged dynamic public var birthDate: Foundation.NSDate? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var code: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var email: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var gender: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var location: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var name: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var fullName: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var phoneNumber: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+}
+@objc @_inheritsConvenienceInitializers public class MediaFile : CoreData.NSManagedObject {
+  @objc override dynamic public init(entity: CoreData.NSEntityDescription, insertInto context: CoreData.NSManagedObjectContext?)
+  @objc deinit
+}
+public enum MediaFileMIMEType {
+  case audioVideo, PDF, other
+  public static func == (a: StoryContent.MediaFileMIMEType, b: StoryContent.MediaFileMIMEType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension MediaFile {
+  public func loadMediaFile(completionHandler: @escaping (Swift.Error?) -> Swift.Void, progressHandler: @escaping (Foundation.Progress) -> Swift.Void)
+  public func MIMEType() -> StoryContent.MediaFileMIMEType
+  public func sourcesFolderUrl() -> Foundation.URL?
+  public func mediaFileUrl() -> Foundation.URL?
+  public func isMediaFileExists() -> Swift.Bool
+  public func thumbnail() -> UIKit.UIImage?
+  public func thumbnailImage(url: Foundation.URL) -> UIKit.UIImage?
+  public func thumbnailPdf(url: Foundation.URL, width: CoreGraphics.CGFloat = 240) -> UIKit.UIImage?
+}
+extension BridgeSession {
+  @nonobjc public class func fetchRequest() -> CoreData.NSFetchRequest<StoryContent.BridgeSession>
+  @objc @NSManaged dynamic public var address: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var complete: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var completeSessionDuration: Swift.Int64 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var created: Foundation.Date? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var duration: Swift.Int64 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var lastOpenedSlideId: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var latitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var longitude: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var presentationId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var sessionId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var slidesCount: Swift.Int16 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var state: Swift.Int16 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var synchronized: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var timeZone: Swift.Int32 {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var userId: Swift.String? {
+    @objc get
+    @objc set
+  }
+  @objc @NSManaged dynamic public var isRestored: Swift.Bool {
+    @objc get
+    @objc set
+  }
+}
+extension StoryContent.SCLMBridgeConstants : Swift.Equatable {}
+extension StoryContent.SCLMBridgeConstants : Swift.Hashable {}
+extension StoryContent.SCLMBridgeConstants : Swift.RawRepresentable {}
+extension StoryContent.LogAction : Swift.Equatable {}
+extension StoryContent.LogAction : Swift.Hashable {}
+extension StoryContent.LogAction : Swift.RawRepresentable {}
+extension StoryContent.Algorithm : Swift.Equatable {}
+extension StoryContent.Algorithm : Swift.Hashable {}
+extension StoryContent.SCLMErrorType : Swift.Equatable {}
+extension StoryContent.SCLMErrorType : Swift.Hashable {}
+extension StoryContent.SCLMErrorType : Swift.RawRepresentable {}
+extension StoryContent.SLWebViewNavigationType : Swift.Equatable {}
+extension StoryContent.SLWebViewNavigationType : Swift.Hashable {}
+extension StoryContent.SCLMBridgeMessageCommand : Swift.Equatable {}
+extension StoryContent.SCLMBridgeMessageCommand : Swift.Hashable {}
+extension StoryContent.SCLMBridgeMessageCommand : Swift.RawRepresentable {}
+extension StoryContent.ClosePresentationMode : Swift.Equatable {}
+extension StoryContent.ClosePresentationMode : Swift.Hashable {}
+extension StoryContent.SessionState : Swift.Equatable {}
+extension StoryContent.SessionState : Swift.Hashable {}
+extension StoryContent.SessionState : Swift.RawRepresentable {}
+extension StoryContent.MediaFileMIMEType : Swift.Equatable {}
+extension StoryContent.MediaFileMIMEType : Swift.Hashable {}
