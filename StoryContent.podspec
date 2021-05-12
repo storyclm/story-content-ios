@@ -12,7 +12,9 @@ Pod::Spec.new do |s|
   
   s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2', 'OTHER_LDFLAGS' => '-all_load' }
 
-  s.vendored_frameworks = "StoryContent.xcframework"
+  s.source_files        = "StoryContent.framework/Headers/*.h"
+  s.public_header_files = "StoryContent.framework/Headers/*.h"
+  s.vendored_frameworks = "StoryContent.framework"
 
   s.ios.deployment_target	= "11.0"
   s.swift_version         	= "4.2"
