@@ -20,5 +20,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'Alamofire', '~> 4.8'
   s.dependency 'Kingfisher', '~> 5.6.0'
-  s.dependency 'ZIPFoundation', '~> 0.9'
+  s.dependency 'ZIPFoundation', '0.9.11'
 end
