@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "StoryContent"
-  s.version     = "0.4.22"
+  s.version     = "0.4.23"
   s.license     = "MIT"
   s.homepage    = "https://breffi.ru/en/storyclm"
   s.author      = "Breffi LLC"
@@ -10,8 +10,6 @@ Pod::Spec.new do |s|
                    DESC"
   s.source      = { :git => "https://github.com/storyclm/story-content-ios.git", :tag => s.version.to_s }
   
-  s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2', 'OTHER_LDFLAGS' => '-all_load' }
-
   s.vendored_frameworks = "StoryContent.xcframework"
 
   s.ios.deployment_target	= "11.0"
