@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name        = "StoryContent"
-  s.version     = "0.4.21"
+  s.version     = "0.4.22"
   s.license     = "MIT"
   s.homepage    = "https://breffi.ru/en/storyclm"
   s.author      = "Breffi LLC"
@@ -12,9 +12,7 @@ Pod::Spec.new do |s|
   
   s.xcconfig = { 'HEADER_SEARCH_PATHS' => '$(SDKROOT)/usr/include/libxml2', 'OTHER_LDFLAGS' => '-all_load' }
 
-  s.source_files        = "StoryContent.framework/Headers/*.h"
-  s.public_header_files = "StoryContent.framework/Headers/*.h"
-  s.vendored_frameworks = "StoryContent.framework"
+  s.vendored_frameworks = "StoryContent.xcframework"
 
   s.ios.deployment_target	= "11.0"
   s.swift_version         	= "4.2"
