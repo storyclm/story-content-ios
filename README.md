@@ -12,7 +12,7 @@
 Чтобы интегрировать StoryContent в ваш проект с помощью CocoaPods, укажите его в своем `Podfile`:
 
 ```ruby
-pod 'StoryContent', '~> 0.4.0'
+pod 'StoryContent', '~> 0.5.0'
 ```
 
 #### Вручную
@@ -213,10 +213,10 @@ SCLMSyncManager.shared.updatePresentation(presentation) { (error) in
 
 ### Аналитика
 
-Аналитика реализована в библиотеке StoryIot, подключение которой осуществляется через CocoaPods
+Аналитика реализована в библиотеке [StoryIoT](https://github.com/storyclm/story-iot-ios), подключение которой осуществляется через CocoaPods
 
 ```swift
-pod 'StoryIoT', :git => 'https://github.com/storyclm/story-iot-ios.git', :tag => ‘develop’
+pod 'StoryIoT', '~> 1.6'
 ```
 
 SLSessionsSyncManager инициализируется в AppDelegate через
