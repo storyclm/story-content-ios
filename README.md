@@ -45,11 +45,10 @@ SCLMAuthService.shared.setAuthEndpoint(authEndpoint)
 Для авторизации от имени пользователя необходимо вызвать следующий метод
 
 ```swift
-SCLMAuthService.shared.login(username: username, password: password, success: {
-    success()
-}) { (error) in
-    failure(error)
-}
+SCLMAuthService.shared.auth(username: String, 
+                            password: String, 
+                            success: @escaping () -> Void, 
+                            failure: @escaping (SCLMError) -> Void)
 ```
 
 При успешной аутентификации будет получен token, который в дальнейшем будет использован SCLMSyncService для доступа к RESTful API
@@ -79,9 +78,7 @@ func authAsService(clientId: String,
 После успешного логина необходим выполнить синхронизацию клиентов
 
 ```swift
-SCLMSyncManager.shared.synchronizeClients { (error) in
-
-}
+SCLMSyncManager.shared.synchronizeClients(completionHandler: @escaping (_ error: SCLMError?) -> Void)
 ```
 
 Данный метод загрузит всех доступных клиентов и презентации для каждого клиента
@@ -115,6 +112,7 @@ public lazy var fetchedResultsController: NSFetchedResultsController = { () -> N
 ```
 
 или так
+    
 ```swift
 public lazy var fetchedResultsControllerSectionLess: NSFetchedResultsController = { () -> NSFetchedResultsController<NSFetchRequestResult> in
     
@@ -137,10 +135,10 @@ public lazy var fetchedResultsControllerSectionLess: NSFetchedResultsController 
 ```swift
 func numberOfSections(in collectionView: UICollectionView) -> Int {
     
-    if let sections = viewModel.fetchedResultsController.sections {
-        return sections.count
+    guard let sections = viewModel.fetchedResultsController.sections else {
+        return 0
     }
-    return 0
+    return sections.count
 }
 ```
 
@@ -161,7 +159,7 @@ func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection s
 Доступ к презентации осуществляется через
 
 ```swift
-let presentation = fetchedResultsController.object(at: indexPath) as! Presentation
+let presentation = fetchedResultsController.object(at: indexPath) as? Presentation
 ```
 
 ### Синхронизация презентаций
@@ -169,11 +167,10 @@ let presentation = fetchedResultsController.object(at: indexPath) as! Presentati
 При синхронизации клиентов синхронизируются только модели презентаций. Для синхронизации контента презентации необходимо вызвать
 
 ```swift
-SCLMSyncManager.shared.synchronizePresentation(presentation, completionHandler: { (error) in
-    completionHandler(error)
-}) { (progress) in
-    progressHandler(progress)
-}
+SCLMSyncManager.shared.synchronizePresentation(_ presentation: Presentation, 
+                                                 completionHandler: @escaping (_ error: Error?) -> Void,
+                                                 progressHandler: @escaping (_ progress: Progress) -> Void, 
+                                                 psnHandler: ((_ psn: PresentationSynchronizingNow) -> Void)?)
 ```
 
 Для восстановления прогреса синхронизации при обновлении данных необходимо воспользоваться следующими инструментами:
@@ -182,7 +179,7 @@ SCLMSyncManager.shared.synchronizePresentation(presentation, completionHandler: 
 let presentationSynchronizingNow = SCLMSyncManager.shared.isPresentationSynchronizingNow(presentation: presentation)
 ```
 
-Если контент загружается в настоящий момент, то метод SCLMSyncManager.shared.isPresentationSynchronizingNow вернет объект, у которого есть следующие свойства
+Если контент загружается в настоящий момент, то метод `SCLMSyncManager.shared.isPresentationSynchronizingNow` вернет объект, у которого есть следующие свойства
 
 ```swift
 public weak var downloadRequest: DownloadRequest?
@@ -206,9 +203,8 @@ SyncManager.shared.deletePresentationContentPackage(presentation)
 Для обновления презентации необходимо вызвать
 
 ```swift
-SCLMSyncManager.shared.updatePresentation(presentation) { (error) in
-    completionHandler(error)
-}
+SCLMSyncManager.shared.updatePresentation(_ presentation: Presentation, 
+                                            completionHandler: @escaping (_ error: Error?) -> Void)
 ```
 
 ### Аналитика
